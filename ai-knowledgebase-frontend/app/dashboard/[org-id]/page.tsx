@@ -1,7 +1,7 @@
 import { notFound, redirect } from "next/navigation";
 
-export default async function OrganizationRedirectPage({ params }: { params: { "org-id": string } }) {
-  const orgId = params["org-id"];
+export default async function OrganizationRedirectPage({ params }: { params: Promise<{ "org-id": string }> }) {
+  const orgId = (await params)["org-id"];
   const baseUrl = process.env.API_GATEWAY_URL || process.env.NEXT_PUBLIC_API_GATEWAY_URL || "";
 
   try {

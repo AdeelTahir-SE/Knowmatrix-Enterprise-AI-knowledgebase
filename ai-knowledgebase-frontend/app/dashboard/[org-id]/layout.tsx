@@ -1,16 +1,18 @@
 import { ReactNode } from "react";
 import { Sidebar } from "../../components/dashboard/Sidebar";
 
-export default function OrganizationDashboardLayout({
+export default async function OrganizationDashboardLayout({
   children,
   params,
 }: {
   children: ReactNode;
-  params: { "org-id": string };
+  params: Promise<{ "org-id": string }>;
 }) {
+  const { "org-id": orgId } = await params;
+
   return (
     <div className="min-h-screen bg-white lg:pl-64">
-      <Sidebar orgId={params["org-id"]} />
+      <Sidebar orgId={orgId} />
       <main className="min-h-screen pb-24">
         {children}
       </main>

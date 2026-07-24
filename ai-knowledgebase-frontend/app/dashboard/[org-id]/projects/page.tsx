@@ -1,5 +1,6 @@
 "use client";
 
+import { use } from "react";
 import Link from "next/link";
 import {
   CheckCircle2,
@@ -73,8 +74,8 @@ const mockProjects = [
   },
 ];
 
-export default function ProjectsPage({ params }: { params: { "org-id": string } }) {
-  const orgId = params["org-id"];
+export default function ProjectsPage({ params }: { params: Promise<{ "org-id": string }> }) {
+  const { "org-id": orgId } = use(params);
 
   return (
     <div className="pt-8 sm:pt-10 px-6 sm:px-10 lg:px-12 max-w-7xl mx-auto">
