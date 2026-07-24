@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import {
   ArrowLeft,
   ArrowRight,
@@ -34,7 +34,7 @@ const regions = [
   "EU West (Ireland)",
 ];
 
-export default function CreateProjectPage() {
+function CreateProjectContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const orgId = searchParams.get("orgId") || "";
@@ -502,5 +502,13 @@ export default function CreateProjectPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function CreateProjectPage() {
+  return (
+    <Suspense fallback={<div className="p-10 text-center text-text-light">Loading project setup...</div>}>
+      <CreateProjectContent />
+    </Suspense>
   );
 }
