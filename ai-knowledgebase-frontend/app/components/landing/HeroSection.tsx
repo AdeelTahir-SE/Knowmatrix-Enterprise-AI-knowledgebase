@@ -1,3 +1,6 @@
+"use client";
+
+import { motion, useMotionValue, useTransform } from "motion/react";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -60,6 +63,57 @@ export default function HeroSection() {
   );
 }
 
+function NodeWithLine({ 
+  icon, 
+  alt,
+  delayClass,
+  posClass,
+  baseX,
+  baseY,
+  widthClass = "w-14",
+  heightClass = "h-14"
+}: any) {
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+
+  // approximate px to viewBox % conversion (assume 450px container)
+  const lineX = useTransform(x, (val) => baseX + (val / 4.5));
+  const lineY = useTransform(y, (val) => baseY + (val / 4.5));
+
+  return (
+    <>
+      <svg
+        className="absolute inset-0 h-full w-full pointer-events-none"
+        viewBox="0 0 100 100"
+        preserveAspectRatio="none"
+      >
+        <motion.line
+          x1="50"
+          y1="50"
+          x2={lineX}
+          y2={lineY}
+          className="dash-line"
+        />
+      </svg>
+      
+      <div className={`node-float ${delayClass} absolute ${posClass}`}>
+        <motion.div
+          drag
+          dragConstraints={{ top: -30, right: 30, bottom: 30, left: -30 }}
+          dragElastic={0.4}
+          dragTransition={{ bounceStiffness: 400, bounceDamping: 15 }}
+          style={{ x, y }}
+          whileHover={{ scale: 1.1 }}
+          whileDrag={{ scale: 0.9, rotate: -5 }}
+          className={`node-in flex ${heightClass} ${widthClass} items-center justify-center rounded-2xl border border-border bg-white shadow-sm cursor-grab active:cursor-grabbing`}
+        >
+          <Image src={icon} alt={alt} width={24} height={24} />
+        </motion.div>
+      </div>
+    </>
+  );
+}
+
 function HeroDiagram() {
   return (
     <div className="relative aspect-square w-full max-w-[430px] sm:max-w-[520px] lg:max-w-[580px] select-none">
@@ -97,22 +151,6 @@ function HeroDiagram() {
           animation: pulseGlow 3s ease-in-out infinite;
         }
       `}</style>
-      <svg
-        className="absolute inset-0 h-full w-full pointer-events-none"
-        viewBox="0 0 100 100"
-        preserveAspectRatio="none"
-        stroke=""
-      >
-        <line x1="50" y1="50" x2="25" y2="25" className="dash-line" />
-        <line x1="50" y1="50" x2="75" y2="20" className="dash-line" />
-        <line x1="50" y1="50" x2="15" y2="45" className="dash-line" />
-        <line x1="50" y1="50" x2="85" y2="40" className="dash-line" />
-        <line x1="50" y1="50" x2="25" y2="75" className="dash-line" />
-        <line x1="50" y1="50" x2="45" y2="85" className="dash-line" />
-        <line x1="50" y1="50" x2="65" y2="80" className="dash-line" />
-        <line x1="50" y1="50" x2="80" y2="65" className="dash-line" />
-      </svg>
-
       {/* Center Circle */}
       <div className="center-pulse absolute left-1/2 top-1/2 z-10 flex h-32 w-32 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-gradient-to-br from-purple-400 to-primary">
         <Image
@@ -125,46 +163,14 @@ function HeroDiagram() {
       </div>
 
       {/* Nodes */}
-
-      {/* 1. Notion (Top Left) */}
-      <div className="node-in node-float node-delay-1 absolute top-[18%] left-[20%] flex h-14 w-14 items-center justify-center rounded-2xl border border-border bg-white shadow-sm transition-transform hover:scale-110">
-        <Image src="/notion.svg" alt="Notion" width={24} height={24} />
-      </div>
-
-      {/* 2. Slack (Top Right) */}
-      <div className="node-in node-float node-delay-2 absolute top-[12%] right-[22%] flex h-14 w-14 items-center justify-center rounded-2xl border border-border bg-white shadow-sm transition-transform hover:scale-110">
-        <Image src="/slack.svg" alt="Slack" width={24} height={24} />
-      </div>
-
-      {/* 3. GitHub (Right) */}
-      <div className="node-in node-float node-delay-3 absolute top-[35%] right-[10%] flex h-14 w-14 items-center justify-center rounded-2xl border border-border bg-white shadow-sm transition-transform hover:scale-110">
-        <Image src="/github.svg" alt="Github" width={24} height={24} />
-      </div>
-
-      {/* 4. PDF Red Solid (Bottom Right) */}
-      <div className="node-in node-float node-delay-4 absolute top-[60%] right-[12%] flex h-14 w-14 items-center justify-center rounded-2xl border border-border bg-white shadow-sm transition-transform hover:scale-110">
-        <Image src="/pdf.svg" alt="Pdf" width={24} height={24} />
-      </div>
-
-      {/* 5. Docs Blue (Bottom Right Lower) */}
-      <div className="node-in node-float node-delay-5 absolute bottom-[15%] right-[28%] flex h-14 w-14 items-center justify-center rounded-2xl border border-border bg-white shadow-sm transition-transform hover:scale-110">
-        <Image src="/docs.svg" alt="docs" width={24} height={24} />
-      </div>
-
-      {/* 6. Cloud (Bottom) */}
-      <div className="node-in node-float node-delay-6 absolute bottom-[8%] left-[40%] flex h-14 w-14 items-center justify-center rounded-2xl border border-border bg-white shadow-sm transition-transform hover:scale-110">
-        <Image src="/cloud.svg" alt="Cloud" width={24} height={24} />
-      </div>
-
-      {/* 7. Database (Bottom Left) */}
-      <div className="node-in node-float node-delay-7 absolute bottom-[20%] left-[18%] flex h-14 w-14 items-center justify-center rounded-2xl border border-border bg-white shadow-sm transition-transform hover:scale-110">
-        <Image src="/database.svg" alt="Database" width={24} height={24} />
-      </div>
-
-      {/* 8. Google drive (Left) */}
-      <div className="node-in node-float node-delay-8 absolute top-[40%] left-[10%] flex h-12 w-12 items-center justify-center rounded-2xl border border-border bg-white shadow-sm transition-transform hover:scale-110">
-        <Image src="/google-drive.svg" alt="Database" width={24} height={24} />
-      </div>
+      <NodeWithLine icon="/notion.svg" alt="Notion" delayClass="node-delay-1" posClass="top-[18%] left-[20%]" baseX={25} baseY={25} />
+      <NodeWithLine icon="/slack.svg" alt="Slack" delayClass="node-delay-2" posClass="top-[12%] right-[22%]" baseX={75} baseY={20} />
+      <NodeWithLine icon="/github.svg" alt="Github" delayClass="node-delay-3" posClass="top-[35%] right-[10%]" baseX={85} baseY={40} />
+      <NodeWithLine icon="/pdf.svg" alt="Pdf" delayClass="node-delay-4" posClass="top-[60%] right-[12%]" baseX={80} baseY={65} />
+      <NodeWithLine icon="/docs.svg" alt="docs" delayClass="node-delay-5" posClass="bottom-[15%] right-[28%]" baseX={65} baseY={80} />
+      <NodeWithLine icon="/cloud.svg" alt="Cloud" delayClass="node-delay-6" posClass="bottom-[8%] left-[40%]" baseX={45} baseY={85} />
+      <NodeWithLine icon="/database.svg" alt="Database" delayClass="node-delay-7" posClass="bottom-[20%] left-[18%]" baseX={25} baseY={75} />
+      <NodeWithLine icon="/google-drive.svg" alt="Google Drive" delayClass="node-delay-8" posClass="top-[40%] left-[10%]" baseX={15} baseY={45} widthClass="w-12" heightClass="h-12" />
     </div>
   );
 }

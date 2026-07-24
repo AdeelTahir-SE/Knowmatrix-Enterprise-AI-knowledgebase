@@ -8,7 +8,6 @@ dotenv.config();
 const app = express();
 
 app.use(cors());
-
 // Only keep this if the gateway itself needs to read request bodies.
 // Otherwise, remove it to avoid consuming the request stream.
 // app.use(express.json());
