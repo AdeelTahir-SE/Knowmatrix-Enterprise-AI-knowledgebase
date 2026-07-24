@@ -44,7 +44,7 @@ export default function Footer() {
               <ul className="space-y-2.5">
                 {links.map((label) => (
                   <li key={label}>
-                    <Link href={label === "Pricing" ? "/pricing" : label === "Blog" ? "/blog" : label === "Docs" ? "/docs" : "#"} className="text-sm text-text-light hover:text-primary">{label}</Link>
+                    <Link href={label === "Pricing" ? "/pricing" : label === "Blog" ? "/blog" : label === "Docs" ? "/docs" : label === "Privacy Policy" ? "/terms" : "#"} className="text-sm text-text-light hover:text-primary">{label}</Link>
                   </li>
                 ))}
               </ul>
@@ -55,8 +55,8 @@ export default function Footer() {
         <div className="flex flex-col items-center justify-between gap-4 border-t border-border pt-6 sm:flex-row">
           <p className="text-xs text-text-lighter">(c) 2024 KnowMatrix.AI. All rights reserved.</p>
           <div className="flex items-center gap-6">
-            <Link href="#" className="text-xs text-text-lighter hover:text-primary">Terms of Service</Link>
-            <Link href="#" className="text-xs text-text-lighter hover:text-primary">Privacy Policy</Link>
+            <Link href="/terms" className="text-xs text-text-lighter hover:text-primary">Terms of Service</Link>
+            <Link href="/terms" className="text-xs text-text-lighter hover:text-primary">Privacy Policy</Link>
           </div>
         </div>
       </div>

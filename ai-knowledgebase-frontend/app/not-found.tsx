@@ -24,7 +24,7 @@ export default function NotFound() {
                 <Home size={16} />
                 Go Home
               </Link>
-              <Link href="#" className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-border bg-white px-5 text-sm font-bold text-text-dark hover:border-primary/30 hover:bg-primary-lighter hover:text-primary">
+              <Link href="/contact" className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-border bg-white px-5 text-sm font-bold text-text-dark hover:border-primary/30 hover:bg-primary-lighter hover:text-primary">
                 <Headphones size={16} />
                 Contact Support
               </Link>

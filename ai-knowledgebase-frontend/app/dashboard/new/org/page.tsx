@@ -19,7 +19,7 @@ export default function CreateOrganizationDashboardPage() {
       val
         .toLowerCase()
         .replace(/[^a-z0-9\s-]/g, "")
-        .replace(/\s+/g, "-")
+        .replace(/\s+/g, "-"),
     );
   };
 
@@ -49,8 +49,10 @@ export default function CreateOrganizationDashboardPage() {
       }
 
       router.push("/dashboard/orgs");
-    } catch (err: any) {
-      setError(err.message || "An error occurred.");
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message || "An error occurred.");
+      }
     } finally {
       setLoading(false);
     }
@@ -85,7 +87,8 @@ export default function CreateOrganizationDashboardPage() {
                   Create Organization
                 </h1>
                 <p className="text-sm leading-relaxed text-text-light sm:text-base">
-                  Create a new organization to manage your projects, team and billing in one place.
+                  Create a new organization to manage your projects, team and
+                  billing in one place.
                 </p>
               </div>
             </div>
@@ -141,7 +144,10 @@ export default function CreateOrganizationDashboardPage() {
               {/* Description */}
               <div>
                 <label className="mb-2 block text-sm font-bold text-text-dark">
-                  Description <span className="font-normal text-text-lighter">(Optional)</span>
+                  Description{" "}
+                  <span className="font-normal text-text-lighter">
+                    (Optional)
+                  </span>
                 </label>
                 <textarea
                   value={description}
@@ -158,14 +164,22 @@ export default function CreateOrganizationDashboardPage() {
               {/* Logo Upload */}
               <div>
                 <label className="mb-2 block text-sm font-bold text-text-dark">
-                  Organization Logo <span className="font-normal text-text-lighter">(Optional)</span>
+                  Organization Logo{" "}
+                  <span className="font-normal text-text-lighter">
+                    (Optional)
+                  </span>
                 </label>
                 <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-border bg-white py-8 transition-colors hover:bg-section-bg">
-                  <button type="button" className="btn btn-secondary h-10 px-4 text-sm mb-3 rounded-md border-border text-text-dark bg-white shadow-sm font-medium">
+                  <button
+                    type="button"
+                    className="btn btn-secondary h-10 px-4 text-sm mb-3 rounded-md border-border text-text-dark bg-white shadow-sm font-medium"
+                  >
                     <Upload size={16} className="text-primary" />
                     Upload logo
                   </button>
-                  <p className="text-xs text-text-lighter">PNG, JPG or SVG. Max size 2MB.</p>
+                  <p className="text-xs text-text-lighter">
+                    PNG, JPG or SVG. Max size 2MB.
+                  </p>
                 </div>
               </div>
             </div>
@@ -174,7 +188,9 @@ export default function CreateOrganizationDashboardPage() {
           {/* Right Column - Sidebar */}
           <div>
             <div className="rounded-2xl border border-border bg-white p-6 shadow-sm sm:p-8">
-              <h2 className="mb-8 text-base font-bold text-text-dark">What&apos;s next?</h2>
+              <h2 className="mb-8 text-base font-bold text-text-dark">
+                What&apos;s next?
+              </h2>
 
               <div className="relative mb-10 space-y-8 before:absolute before:left-4 before:top-4 before:-bottom-4 before:w-[2px] before:bg-border">
                 {/* Step 1 */}
@@ -183,7 +199,9 @@ export default function CreateOrganizationDashboardPage() {
                     1
                   </div>
                   <div className="pt-1.5">
-                    <h3 className="mb-1.5 text-sm font-bold text-text-dark">Create Organization</h3>
+                    <h3 className="mb-1.5 text-sm font-bold text-text-dark">
+                      Create Organization
+                    </h3>
                     <p className="text-sm leading-relaxed text-text-light">
                       Set up your organization details and preferences.
                     </p>
@@ -196,7 +214,9 @@ export default function CreateOrganizationDashboardPage() {
                     2
                   </div>
                   <div className="pt-1.5">
-                    <h3 className="mb-1.5 text-sm font-bold text-text-medium">Invite Members</h3>
+                    <h3 className="mb-1.5 text-sm font-bold text-text-medium">
+                      Invite Members
+                    </h3>
                     <p className="text-sm leading-relaxed text-text-lighter">
                       Invite your team members to collaborate.
                     </p>
@@ -209,9 +229,12 @@ export default function CreateOrganizationDashboardPage() {
                     3
                   </div>
                   <div className="pt-1.5">
-                    <h3 className="mb-1.5 text-sm font-bold text-text-medium">Create Project</h3>
+                    <h3 className="mb-1.5 text-sm font-bold text-text-medium">
+                      Create Project
+                    </h3>
                     <p className="text-sm leading-relaxed text-text-lighter">
-                      Create your first project and start building your knowledge base.
+                      Create your first project and start building your
+                      knowledge base.
                     </p>
                   </div>
                 </div>
@@ -223,9 +246,12 @@ export default function CreateOrganizationDashboardPage() {
                   <Shield size={20} />
                 </div>
                 <div>
-                  <h4 className="mb-1 text-sm font-bold text-text-dark">Your data is secure</h4>
+                  <h4 className="mb-1 text-sm font-bold text-text-dark">
+                    Your data is secure
+                  </h4>
                   <p className="text-xs leading-relaxed text-text-light">
-                    We use enterprise-grade security to protect your data and ensure privacy.
+                    We use enterprise-grade security to protect your data and
+                    ensure privacy.
                   </p>
                 </div>
               </div>

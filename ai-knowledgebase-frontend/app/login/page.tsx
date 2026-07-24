@@ -36,7 +36,7 @@ export default function LoginPage() {
       }
 
       // If login is successful, redirect
-      router.push("/organization");
+      router.push("/dashboard/orgs");
     } catch (err) {
       if (err instanceof Error) {
         setError(err.message || "An error occurred during login.");
