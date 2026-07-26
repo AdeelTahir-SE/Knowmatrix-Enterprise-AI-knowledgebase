@@ -3,17 +3,16 @@ import router from "./auth.routes.js";
 import connectDB from "./db.js";
 import dotenv from "dotenv";
 import cors from "cors";
-
+import cookieParser from "cookie-parser";
 
 dotenv.config();
-const REFRESH_TOKEN_EXPIRATION = process.env.REFRESH_TOKEN_EXPIRATION ;
-const ACCESS_TOKEN_EXPIRATION = process.env.ACCESS_TOKEN_EXPIRATION;
-const CSRF_TOKEN_EXPIRATION = process.env.CSRF_TOKEN_EXPIRATION ;
 
-console.log("tokens123",REFRESH_TOKEN_EXPIRATION, ACCESS_TOKEN_EXPIRATION, CSRF_TOKEN_EXPIRATION)
 const app = express();
-
-app.use(cors());
+app.use(cookieParser())
+app.use(cors({
+  origin: process.env.FRONTEND_URL ,
+  credentials: true, 
+}));
 app.use(express.json());
 
 connectDB();

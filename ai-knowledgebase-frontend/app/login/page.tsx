@@ -25,9 +25,9 @@ export default function LoginPage() {
       const res = await fetch(`${baseUrl}/auth/login`, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
-          "credentials": "include"
+          "Content-Type": "application/json"
         },
+        credentials: "include",
         body: JSON.stringify({ email, password }),
       });
 

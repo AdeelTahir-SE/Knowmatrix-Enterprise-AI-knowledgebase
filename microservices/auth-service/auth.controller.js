@@ -4,9 +4,11 @@ import Redis from "ioredis";
 import {generateAccessToken, generateRefreshToken, generateCsrfToken} from "./token.service.js";
 import redisClient from "./redis.js"
 
-const REFRESH_TOKEN_EXPIRATION = process.env.REFRESH_TOKEN_EXPIRATION ;
-const ACCESS_TOKEN_EXPIRATION = process.env.ACCESS_TOKEN_EXPIRATION;
-const CSRF_TOKEN_EXPIRATION = process.env.CSRF_TOKEN_EXPIRATION ;
+// Parse environment variables to Integers (Seconds)
+const REFRESH_TOKEN_EXPIRATION = parseInt(process.env.REFRESH_TOKEN_EXPIRATION || "604800", 10);
+const ACCESS_TOKEN_EXPIRATION = parseInt(process.env.ACCESS_TOKEN_EXPIRATION || "900", 10);
+const CSRF_TOKEN_EXPIRATION = parseInt(process.env.CSRF_TOKEN_EXPIRATION || "3600", 10);
+const isProd = process.env.NODE_ENV === "production";
 
 
 export async function register(req, res) {
@@ -44,21 +46,21 @@ export async function register(req, res) {
     return res
       .cookie("accessToken", accessToken, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "none",
-        maxAge: ACCESS_TOKEN_EXPIRATION,
+        secure: isProd,
+        sameSite: "lax",
+        maxAge: ACCESS_TOKEN_EXPIRATION * 1000,
       })
       .cookie("refreshToken", refreshToken, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "none",
-        maxAge: REFRESH_TOKEN_EXPIRATION,
+        secure: isProd,
+        sameSite: "lax",
+        maxAge: REFRESH_TOKEN_EXPIRATION * 1000,
       })
       .cookie("csrfToken", csrfToken, {
         httpOnly: false, // CSRF token should be accessible by the client
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "none",
-        maxAge: CSRF_TOKEN_EXPIRATION, // 1 hour
+        secure: isProd,
+        sameSite: "lax",
+        maxAge: CSRF_TOKEN_EXPIRATION * 1000, // 1 hour
       })
       .status(201)
       .json({
@@ -110,29 +112,27 @@ export async function login(req, res) {
     res
       .cookie("accessToken", accessToken, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "none",
-        maxAge: ACCESS_TOKEN_EXPIRATION,
+        secure: isProd,
+        sameSite: "lax",
+        maxAge: ACCESS_TOKEN_EXPIRATION * 1000,
       })
       .cookie("refreshToken", refreshToken, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "none",
-        maxAge: REFRESH_TOKEN_EXPIRATION,
+        secure: isProd,
+        sameSite: "lax",
+        maxAge: REFRESH_TOKEN_EXPIRATION * 1000,
       })
       .cookie("csrfToken", csrfToken, {
         httpOnly: false, // CSRF token should be accessible by the client
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "none",
-        maxAge: CSRF_TOKEN_EXPIRATION,
+        secure: isProd,
+        sameSite: "lax",
+        maxAge: CSRF_TOKEN_EXPIRATION * 1000,
       })
-      .status(200)
-      .json({
+      .status(200);
+      res.json({
         message: "Login successful",
-        userId: user._id,
+        user: user,
       });
-
-    res.status(200).json({ user });
   } catch (err) {
     res.status(500).json({
       message: err.message,

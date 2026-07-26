@@ -11,8 +11,9 @@ app.use(cookieParser());
 
 
 app.use(cors({
-  origin: process.env.FRONTEND_URL || "http://localhost:3000",
-  credentials: true,
+  origin: process.env.FRONTEND_URL,
+  credentials: true, // Allow cookies to be sent
+  
 }));
 // Only keep this if the gateway itself needs to read request bodies.
 // Otherwise, remove it to avoid consuming the request stream.
