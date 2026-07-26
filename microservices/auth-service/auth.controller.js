@@ -1,19 +1,21 @@
 import User from "./User.js";
-import { hashPassword } from "./utils/hash.js";
+import { hashPassword,comparePassword } from "./utils/hash.js";
 import Redis from "ioredis";
 import {generateAccessToken, generateRefreshToken, generateCsrfToken} from "./token.service.js";
+import redisClient from "./redis.js"
 
-const redisClient = new Redis("rediss://default:gQAAAAAAAncNAAIgcDJkMTAyODVkYzY4YzA0M2E3YjYyODFjMDA0NDI1Mjk2Nw@huge-mole-161549.upstash.io:6379");
-const REFRESH_TOKEN_EXPIRATION = process.env.REFRESH_TOKEN_EXPIRATION || "30d";
-const ACCESS_TOKEN_EXPIRATION = process.env.ACCESS_TOKEN_EXPIRATION || "15m";
-const CSRF_TOKEN_EXPIRATION = process.env.CSRF_TOKEN_EXPIRATION || "1h";
+const REFRESH_TOKEN_EXPIRATION = process.env.REFRESH_TOKEN_EXPIRATION ;
+const ACCESS_TOKEN_EXPIRATION = process.env.ACCESS_TOKEN_EXPIRATION;
+const CSRF_TOKEN_EXPIRATION = process.env.CSRF_TOKEN_EXPIRATION ;
+
 
 export async function register(req, res) {
+  console.log("tokens",REFRESH_TOKEN_EXPIRATION, ACCESS_TOKEN_EXPIRATION, CSRF_TOKEN_EXPIRATION)
   try {
     const { email, password, userName } = req.body;
 
     let user = await User.findOne({ email });
-
+    
     if (!user) {
       user = await User.create({
         email,
@@ -21,13 +23,14 @@ export async function register(req, res) {
         userName,
       });
     }
+    console.log("0")
     const accessToken = generateAccessToken(user);
-
+    console.log("1")
     const { refreshToken, refreshTokenId } = generateRefreshToken(user);
 
     const csrfToken = generateCsrfToken();
 
-    await redis.set(
+    await redisClient.set(
       `refresh:${refreshTokenId}`,
       JSON.stringify({
         userId: user._id,
@@ -36,6 +39,8 @@ export async function register(req, res) {
       "EX",
       REFRESH_TOKEN_EXPIRATION,
     );
+        console.log("2")
+
     return res
       .cookie("accessToken", accessToken, {
         httpOnly: true,
@@ -61,6 +66,7 @@ export async function register(req, res) {
         userId: user._id,
       });
   } catch (err) {
+    console.log(err.message)
     res.status(500).json({
       message: err.message,
     });
@@ -91,7 +97,7 @@ export async function login(req, res) {
 
     const csrfToken = generateCsrfToken();
 
-    await redis.set(
+    await redisClient.set(
       `refresh:${refreshTokenId}`,
       JSON.stringify({
         userId: user._id,

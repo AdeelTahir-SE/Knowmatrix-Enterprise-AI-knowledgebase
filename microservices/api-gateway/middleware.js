@@ -1,13 +1,11 @@
 import jwt from "jsonwebtoken";
-import Redis from "ioredis";
+import redisClient from "./redis.js";
 import {getUserById} from "./db.js"
 import {
   generateAccessToken,
   generateRefreshToken,
   generateCsrfToken,
 } from "./token.service.js";
-
-const redisClient = new Redis("rediss://default:gQAAAAAAAncNAAIgcDJkMTAyODVkYzY4YzA0M2E3YjYyODFjMDA0NDI1Mjk2Nw@huge-mole-161549.upstash.io:6379");
 
 const ACCESS_SECRET = process.env.ACCESS_TOKEN_SECRET;
 const REFRESH_SECRET = process.env.REFRESH_TOKEN_SECRET;
@@ -127,21 +125,21 @@ export async function authenticate(req, res, next) {
     res.cookie("accessToken", newAccessToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
+      sameSite: "none",
       maxAge: ACCESS_TOKEN_EXPIRATION,
     });
 
     res.cookie("refreshToken", newRefreshToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
+      sameSite: "none",
       maxAge: REFRESH_TOKEN_EXPIRATION,
     });
 
     res.cookie("csrfToken", newCsrfToken, {
       httpOnly: false,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
+      sameSite: "none",
       maxAge: CSRF_TOKEN_EXPIRATION,
     });
 

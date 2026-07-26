@@ -1,8 +1,8 @@
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
 
-const ACCESS_SECRET = process.env.ACCESS_TOKEN_SECRET;
-const REFRESH_SECRET = process.env.REFRESH_TOKEN_SECRET;
+const ACCESS_SECRET = process.env.ACCESS_TOKEN_SECRET || "accesssecretkey";
+const REFRESH_SECRET = process.env.REFRESH_TOKEN_SECRET || "refreshsecretkey";
 
 const ACCESS_EXPIRES = process.env.ACCESS_TOKEN_EXPIRATION||"15m";
 const REFRESH_EXPIRES = process.env.REFRESH_TOKEN_EXPIRATION||"30d";

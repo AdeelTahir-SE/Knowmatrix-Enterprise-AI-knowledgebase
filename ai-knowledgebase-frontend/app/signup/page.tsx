@@ -25,6 +25,7 @@ export default function SignupPage() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "credentials": "include"
         },
         body: JSON.stringify({ userName:name, email, password }),
       });

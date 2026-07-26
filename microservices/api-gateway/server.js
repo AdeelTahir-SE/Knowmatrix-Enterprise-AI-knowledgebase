@@ -4,14 +4,16 @@ import dotenv from "dotenv";
 import { createProxyMiddleware } from "http-proxy-middleware";
 import cookieParser from "cookie-parser";
 import {authenticate} from "./middleware.js";
-dotenv.config();
-
+dotenv.config({ path: './.env' });
 const app = express();
 app.use(cookieParser());
 
 
 
-app.use(cors());
+app.use(cors({
+  origin: process.env.FRONTEND_URL || "http://localhost:3000",
+  credentials: true,
+}));
 // Only keep this if the gateway itself needs to read request bodies.
 // Otherwise, remove it to avoid consuming the request stream.
 // app.use(express.json());
