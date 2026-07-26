@@ -2,10 +2,14 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import { createProxyMiddleware } from "http-proxy-middleware";
-
+import cookieParser from "cookie-parser";
+import {authenticate} from "./middleware.js";
 dotenv.config();
 
 const app = express();
+app.use(cookieParser());
+
+
 
 app.use(cors());
 // Only keep this if the gateway itself needs to read request bodies.
@@ -19,6 +23,12 @@ const serviceRoutes = {
 };
 
 // Auth Service
+app.use("/auth", (req,res,next) => {
+  console.log(req.cookies);
+  next();
+});
+
+
 app.use(
   "/auth",
   createProxyMiddleware({
@@ -30,11 +40,13 @@ app.use(
   })
 );
 
+
+app.use("/knowmatrix/:service", authenticate);
+
 // Generic proxy for other services
 app.use("/knowmatrix/:service", (req, res, next) => {
   const { service } = req.params;
   const target = serviceRoutes[service];
-
   if (!target) {
     return res.status(404).json({
       error: `Unknown service: ${service}`,
