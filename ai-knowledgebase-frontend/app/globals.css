@@ -1,4 +1,4 @@
-﻿@import "tailwindcss";
+@import "tailwindcss";
 
 :root {
   --background: #ffffff;
@@ -52,7 +52,7 @@
 ::-webkit-scrollbar-thumb { background: #c4c4c4; border-radius: 4px; }
 ::-webkit-scrollbar-thumb:hover { background: #a0a0a0; }
 
-a, button { transition: all 0.2s ease; }
+a, button { transition: all 0.2s ease; cursor: pointer; }
 .btn {
   display: inline-flex;
   min-height: 48px;
