@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { Sidebar } from "../../components/dashboard/Sidebar";
+import { Sidebar } from "../../components/organization/Sidebar";
 
 export default async function OrganizationDashboardLayout({
   children,
