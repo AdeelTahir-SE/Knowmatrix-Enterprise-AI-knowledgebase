@@ -33,3 +33,6 @@ router.put("/update-project", (req, res) => {
 router.delete("/delete-project", (req, res) => {
   res.send("Project deleted");
 });
+
+
+export default router;
