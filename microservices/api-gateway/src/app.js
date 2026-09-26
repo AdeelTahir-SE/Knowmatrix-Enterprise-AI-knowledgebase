@@ -12,7 +12,9 @@ app.use(cookieParser());
 
 // CORS configuration
 const allowedOrigins = process.env.FRONTEND_URL
-  ? process.env.FRONTEND_URL.split(",").map((url) => url.trim())
+  ? process.env.FRONTEND_URL.split(",")
+      .map((url) => url.trim().replace(/\/+$/, ""))
+      .filter(Boolean)
   : [];
 
 app.use(
@@ -21,14 +23,17 @@ app.use(
       // Allow requests with no origin (e.g., server-to-server, health-check, curl)
       if (!origin) return callback(null, true);
 
+      const normalizedOrigin = origin.replace(/\/+$/, "");
+
       if (
         allowedOrigins.length === 0 ||
-        allowedOrigins.includes(origin) ||
+        allowedOrigins.includes(normalizedOrigin) ||
         allowedOrigins.includes("*")
       ) {
         return callback(null, true);
       }
 
+      console.warn(`Blocked by CORS: origin "${origin}" not in allowedOrigins:`, allowedOrigins);
       return callback(null, false);
     },
     credentials: true,
@@ -50,9 +55,9 @@ app.get("/health", (req, res) => {
 });
 
 const getServiceRoutes = () => ({
-  auth: process.env.AUTH_SERVICE_URL,
-  analytics: process.env.ANALYTICS_SERVICE_URL,
-  notification: process.env.NOTIFICATION_SERVICE_URL,
+  auth: process.env.AUTH_SERVICE_URL?.replace(/\/+$/, ""),
+  analytics: process.env.ANALYTICS_SERVICE_URL?.replace(/\/+$/, ""),
+  notification: process.env.NOTIFICATION_SERVICE_URL?.replace(/\/+$/, ""),
 });
 
 // Auth Service logger
@@ -62,7 +67,7 @@ app.use("/auth", (req, res, next) => {
 
 // Auth Service proxy
 app.use("/auth", (req, res, next) => {
-  const target = process.env.AUTH_SERVICE_URL;
+  const target = process.env.AUTH_SERVICE_URL?.replace(/\/+$/, "");
   if (!target) {
     return res.status(503).json({
       error: "Auth service target URL not configured (AUTH_SERVICE_URL missing)",

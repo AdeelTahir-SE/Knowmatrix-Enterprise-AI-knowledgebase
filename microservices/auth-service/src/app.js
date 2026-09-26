@@ -11,16 +11,19 @@ const app = express();
 app.use(cookieParser());
 
 const allowedOrigins = process.env.FRONTEND_URL
-  ? process.env.FRONTEND_URL.split(",").map((url) => url.trim())
+  ? process.env.FRONTEND_URL.split(",")
+      .map((url) => url.trim().replace(/\/+$/, ""))
+      .filter(Boolean)
   : [];
 
 app.use(
   cors({
     origin: (origin, callback) => {
       if (!origin) return callback(null, true);
+      const normalizedOrigin = origin.replace(/\/+$/, "");
       if (
         allowedOrigins.length === 0 ||
-        allowedOrigins.includes(origin) ||
+        allowedOrigins.includes(normalizedOrigin) ||
         allowedOrigins.includes("*")
       ) {
         return callback(null, true);

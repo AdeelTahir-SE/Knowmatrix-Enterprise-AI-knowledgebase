@@ -29,10 +29,11 @@ export default function CreateOrganizationDashboardPage() {
     setLoading(true);
 
     try {
-      const baseUrl =
+      const rawBaseUrl =
         process.env.NEXT_PUBLIC_API_GATEWAY_URL ||
         process.env.API_GATEWAY_URL ||
         "";
+      const baseUrl = rawBaseUrl.replace(/\/+$/, "");
       const res = await fetch(`${baseUrl}/organizations`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },

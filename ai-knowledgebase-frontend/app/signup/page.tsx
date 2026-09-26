@@ -19,8 +19,8 @@ export default function SignupPage() {
     setLoading(true);
 
     try {
-      const baseUrl = process.env.NEXT_PUBLIC_API_GATEWAY_URL || process.env.API_GATEWAY_URL || "";
-      console.log(`${baseUrl}/auth/register`)
+      const rawBaseUrl = process.env.NEXT_PUBLIC_API_GATEWAY_URL || process.env.API_GATEWAY_URL || "";
+      const baseUrl = rawBaseUrl.replace(/\/+$/, "");
       const res = await fetch(`${baseUrl}/auth/register`, {
         method: "POST",
         headers: {
