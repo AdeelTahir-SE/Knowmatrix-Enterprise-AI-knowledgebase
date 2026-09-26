@@ -1,7 +1,0 @@
-{
-  "dependencies": {
-    "dotenv": "^17.4.2",
-    "mongoose": "^9.7.4",
-    "motion": "^12.42.2"
-  }
-}
