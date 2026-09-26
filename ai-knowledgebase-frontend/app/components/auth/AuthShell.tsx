@@ -11,45 +11,45 @@ type AuthShellProps = {
 
 export function AuthShell({ title, subtitle, children }: AuthShellProps) {
   return (
-    <main className="min-h-screen bg-section-bg p-4 sm:p-6 lg:p-8">
-      <div className="mx-auto grid min-h-[calc(100vh-32px)] max-w-6xl overflow-hidden rounded-2xl border border-border bg-white shadow-[0_18px_60px_-40px_rgba(17,24,39,0.45)] sm:min-h-[calc(100vh-48px)] lg:grid-cols-[0.9fr_1.1fr]">
-        <section className="relative overflow-hidden bg-gradient-to-br from-[#5B3FE6] via-primary to-[#7C5CE6] p-8 text-white sm:p-10 lg:p-12">
-          <div className="relative z-10 flex h-full flex-col">
-            <div>
-              <Link href="/" className="inline-flex w-fit items-center gap-2.5 mb-12 sm:mb-16">
-                <Image src="/logo.svg" alt="" width={48} height={48} priority className="h-11 w-11 object-contain brightness-0 invert" />
-                <span className="text-xl font-bold">KnowMatrix</span>
-              </Link>
+    <main className="min-h-screen w-full bg-white grid lg:grid-cols-2">
+      <section className="relative flex flex-col justify-between overflow-hidden bg-gradient-to-br from-[#5B3FE6] via-primary to-[#7C5CE6] p-8 sm:p-12 lg:p-16 xl:p-20 text-white">
+        <div className="relative z-10 flex h-full flex-col justify-between">
+          <div>
+            <Link href="/" className="inline-flex w-fit items-center gap-2.5 mb-10 sm:mb-14">
+              <Image src="/logo.svg" alt="" width={48} height={48} priority className="h-11 w-11 object-contain brightness-0 invert" />
+              <span className="text-xl font-bold">KnowMatrix</span>
+            </Link>
 
-              <div className="max-w-sm">
-                <h1 className="mb-4 text-3xl font-bold tracking-tight sm:text-4xl">{title}</h1>
-                <p className="mb-8 text-sm leading-7 text-white/75 sm:text-base">{subtitle}</p>
-                <ul className="space-y-4 text-sm font-medium text-white/85">
-                  {["No credit card required", "Setup in less than 2 minutes", "Cancel anytime"].map((item) => (
-                    <li key={item} className="flex items-center gap-3">
-                      <span className="flex h-6 w-6 items-center justify-center rounded-full bg-white/15">
-                        <Check size={15} />
-                      </span>
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-
-            <div className="mt-auto grid grid-cols-3 gap-3 text-white/70 pt-12">
-              <div className="rounded-xl bg-white/10 p-3 backdrop-blur-sm"><Database size={20} /></div>
-              <div className="rounded-xl bg-white/10 p-3 backdrop-blur-sm"><LockKeyhole size={20} /></div>
-              <div className="rounded-xl bg-white/10 p-3 backdrop-blur-sm"><Mail size={20} /></div>
+            <div className="max-w-md">
+              <h1 className="mb-4 text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl">{title}</h1>
+              <p className="mb-8 text-base leading-7 text-white/80 sm:text-lg">{subtitle}</p>
+              <ul className="space-y-4 text-sm font-medium text-white/90 sm:text-base">
+                {["No credit card required", "Setup in less than 2 minutes", "Cancel anytime"].map((item) => (
+                  <li key={item} className="flex items-center gap-3">
+                    <span className="flex h-6 w-6 items-center justify-center rounded-full bg-white/20">
+                      <Check size={16} />
+                    </span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
-          <div className="absolute -bottom-24 -right-20 h-64 w-64 rounded-full bg-white/10 blur-2xl" />
-        </section>
 
-        <section className="flex items-center justify-center px-6 py-12 sm:px-10 lg:px-16">
-          <div className="w-full max-w-md">{children}</div>
-        </section>
-      </div>
+          <div className="mt-12 sm:mt-16 grid grid-cols-3 gap-3 text-white/70 max-w-xs">
+            <div className="rounded-xl bg-white/10 p-3.5 backdrop-blur-sm flex items-center justify-center"><Database size={22} /></div>
+            <div className="rounded-xl bg-white/10 p-3.5 backdrop-blur-sm flex items-center justify-center"><LockKeyhole size={22} /></div>
+            <div className="rounded-xl bg-white/10 p-3.5 backdrop-blur-sm flex items-center justify-center"><Mail size={22} /></div>
+          </div>
+        </div>
+
+        <div className="absolute -bottom-24 -right-20 h-80 w-80 rounded-full bg-white/10 blur-3xl pointer-events-none" />
+        <div className="absolute -top-24 -left-20 h-80 w-80 rounded-full bg-black/10 blur-3xl pointer-events-none" />
+      </section>
+
+      <section className="flex min-h-full items-center justify-center px-6 py-12 sm:px-10 lg:px-16 xl:px-24 bg-white">
+        <div className="w-full max-w-md">{children}</div>
+      </section>
     </main>
   );
 }
